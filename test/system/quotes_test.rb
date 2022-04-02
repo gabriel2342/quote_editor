@@ -1,6 +1,9 @@
 require "application_system_test_case"
 
 class QuotesTest < ApplicationSystemTestCase
+  setup do
+    @quote = quotes(:first)
+  end
   test "Creatig a new quote" do
     # When we visit the Quotes#index page
     # we expect to see a title with the text "Quotes"
@@ -22,5 +25,20 @@ class QuotesTest < ApplicationSystemTestCase
     assert_selector "h1", text: "Quotes"
     assert_text "Capybara quote"
 
+  end
+
+  test "Showing a quote" do
+    visit quotes_path
+    click_link @quote.name
+
+    assert_selector "h1", text: @quote.name
+  end
+
+  test "Updating a quote" do
+    visit quotes_path
+    assert_selector "h1", text: "Quotes"
+
+    click_on "Edit", match: :first
+    assert_selector "h1", text "Edit quote"
   end
 end
